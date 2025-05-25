@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Main Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
+
+    .header {
+      position: relative;
+      padding: 20px;
+      background-color: #111;
+    }
+
+    .active-users {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: limegreen;
+      font-weight: bold;
+      animation: flicker 1s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%   { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    .game-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 30px;
+    }
+
+    .game-item {
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .game-item img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 3px solid red;
+    }
+
+    .game-item p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Welcome to the Ultimate Prediction Site</h1>
+    <div class="active-users" id="userCount">Active Users: 1745</div>
+  </div>
+
+  <div class="game-list">
+    <div class="game-item" onclick="selectGame('fruit-hunt')">
+      <img src="fruit-hunt.jpeg" alt="Fruit Hunt">
+      <p>Fruit Hunt Sure Fruit</p>
+    </div>
+    <div class="game-item" onclick="selectGame('mines')">
+      <img src="mines.jpeg" alt="Mines Moves">
+      <p>Mines Moves Picker</p>
+    </div>
+    <div class="game-item" onclick="selectGame('spin-x')">
+      <img src="spin-x.jpeg" alt="Spin X">
+      <p>Spin X</p>
+    </div>
+    <div class="game-item" onclick="selectGame('aviator')">
+      <img src="aviator.jpeg" alt="Aviator">
+      <p>Aviator Coefficient Injector</p>
+    </div>
+  </div>
+
+  <script>
+    function selectGame(gameName) {
+      switch (gameName) {
+        case 'fruit-hunt':
+          window.location.href = 'fruit-bookmaker.html';
+          break;
+        case 'mines':
+          window.location.href = 'mines.html';
+          break;
+        case 'spin-x':
+          window.location.href = 'spin.html';
+          break;
+        case 'aviator':
+          window.location.href = 'aviator.html';
+          break;
+      }
+    }
+
+    // Fake user count flicker
+    function flickerUserCount() {
+      const count = Math.floor(Math.random() * 1000) + 1000;
+      document.getElementById('userCount').innerText = `Active Users: ${count}`;
+    }
+    setInterval(flickerUserCount, 1500);
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spin X Signal</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #timer, #result, #redirect-timer {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Spin X Signal Generator</h1>
+  <button onclick="startBot()" id="startBtn">Start</button>
+
+  <div id="timer" class="hidden">Calculating... 10</div>
+  <div id="result" class="hidden"></div>
+  <div id="redirect-timer" class="hidden">Redirecting in 30s...</div>
+
+  <script>
+    function startBot() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("timer").classList.remove("hidden");
+
+      let countdown = 10;
+      const timerInterval = setInterval(() => {
+        countdown--;
+        document.getElementById("timer").innerText = "Calculating... " + countdown;
+
+        if (countdown === 0) {
+          clearInterval(timerInterval);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function showResult() {
+      const outcome = generateOutcome(); // "UP", "DOWN", or "MIDDLE"
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 5);
+      const strikeTime = now.toTimeString().slice(0, 5);
+
+      document.getElementById("timer").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").innerHTML = `
+        <h2>Prediction: <span style="color: cyan">${outcome}</span></h2>
+        <p>Strike at <span style="color: gold">${strikeTime}</span></p>
+      `;
+
+      // 30-sec countdown to main page
+      let redirectCount = 30;
+      document.getElementById("redirect-timer").classList.remove("hidden");
+      const redirectInterval = setInterval(() => {
+        redirectCount--;
+        document.getElementById("redirect-timer").innerText = `Redirecting in ${redirectCount}s...`;
+        if (redirectCount === 0) {
+          clearInterval(redirectInterval);
+          window.location.href = "main.html";
+        }
+      }, 1000);
+    }
+
+    function generateOutcome() {
+      const rand = Math.random() * 100;
+      if (rand < 45) return "UP";
+      if (rand < 90) return "DOWN";
+      return "MIDDLE";
+    }
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>

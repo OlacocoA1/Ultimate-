@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fruit Hunt - Bookmaker</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    select, input, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fruit Hunt Game Access</h1>
+  <p>Select your bookmarker and enter your phone number</p>
+
+  <select id="bookmaker">
+    <option value="sportybet">SportyBet</option>
+    <option value="football">Football.com</option>
+  </select><br>
+
+  <input type="tel" id="phone" placeholder="Phone Number" /><br>
+
+  <button onclick="initiatePayment()">Pay ₦500 & Continue</button>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script>
+    function initiatePayment() {
+      const phone = document.getElementById("phone").value.trim();
+      if (!phone) return alert("Enter your phone number");
+
+      const handler = PaystackPop.setup({
+        key: 'pk_live_b5fa4e730d9baa38f7ff012ad4d263d5d3459c5b',
+        email: `${phone}@cashchop.ng`, // pseudo email for tracking
+        amount: 50000,
+        currency: 'NGN',
+        ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+        callback: function (response) {
+          alert("Payment successful!");
+          window.location.href = "fruit-signal.html";
+        },
+        onClose: function () {
+          alert("Payment closed.");
+        }
+      });
+
+      handler.openIframe();
+    }
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aviator Injection Signal</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #warning {
+      color: orange;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    #result, #timer, #redirect {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aviator Coefficient Injector</h1>
+  <p id="warning">Warning: Injection might fail if 5 or more injections are active.<br>Use at your own risk!</p>
+
+  <button onclick="startInjection()" id="startBtn">Start Injection</button>
+
+  <div id="timer" class="hidden">Injecting in 10...</div>
+  <div id="result" class="hidden"></div>
+  <div id="redirect" class="hidden">Redirecting in 30s...</div>
+
+  <script>
+    function startInjection() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("timer").classList.remove("hidden");
+
+      let countdown = 10;
+      const interval = setInterval(() => {
+        document.getElementById("timer").innerText = "Injecting in " + countdown + "...";
+        countdown--;
+        if (countdown < 0) {
+          clearInterval(interval);
+          showInjection();
+        }
+      }, 1000);
+    }
+
+    function showInjection() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 15);
+      const time = now.toTimeString().slice(0, 5);
+
+      document.getElementById("timer").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").innerHTML = `
+        <h2>Injection Successful</h2>
+        <p>Place your bet at <span style="color: gold">${time}</span></p>
+        <p style="color:red;">Use at your own risk</p>
+      `;
+
+      // 30-sec redirect
+      let redirectCountdown = 30;
+      document.getElementById("redirect").classList.remove("hidden");
+      const redir = setInterval(() => {
+        document.getElementById("redirect").innerText = `Redirecting in ${redirectCountdown--}s...`;
+        if (redirectCountdown < 0) {
+          clearInterval(redir);
+          window.location.href = "main.html";
+        }
+      }, 1000);
+    }
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>

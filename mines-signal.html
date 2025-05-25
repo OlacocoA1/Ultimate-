@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mines Moves Picker</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    select, input, button {
+      font-size: 16px;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      gap: 5px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .cell {
+      width: 40px;
+      height: 40px;
+      background-color: #444;
+      border-radius: 5px;
+    }
+
+    .safe {
+      border: 3px solid limegreen;
+    }
+
+    #timer, #strike, #redirect {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mines Moves Picker</h1>
+  <div>
+    <label>Grid Size:</label>
+    <select id="gridSize">
+      <option value="3">3x3</option>
+      <option value="4">4x4</option>
+      <option value="5">5x5</option>
+    </select>
+
+    <label>Mines:</label>
+    <input type="number" id="mineCount" min="1" max="20" value="5"/>
+  </div>
+
+  <button onclick="startBot()">Start</button>
+  <div id="timer" class="hidden">Analyzing... 10</div>
+  <div id="gridContainer" class="grid hidden"></div>
+  <div id="strike" class="hidden"></div>
+  <div id="redirect" class="hidden">Redirecting in 30s...</div>
+
+  <script>
+    function startBot() {
+      document.getElementById("timer").classList.remove("hidden");
+      document.getElementById("gridContainer").classList.add("hidden");
+      document.getElementById("strike").classList.add("hidden");
+      document.getElementById("redirect").classList.add("hidden");
+
+      let countdown = 10;
+      document.getElementById("timer").innerText = "Analyzing... 10";
+      const interval = setInterval(() => {
+        countdown--;
+        document.getElementById("timer").innerText = "Analyzing... " + countdown;
+        if (countdown === 0) {
+          clearInterval(interval);
+          displayGrid();
+        }
+      }, 1000);
+    }
+
+    function displayGrid() {
+      const gridSize = parseInt(document.getElementById("gridSize").value);
+      const mineCount = parseInt(document.getElementById("mineCount").value);
+      const total = gridSize * gridSize;
+
+      let allCells = Array.from({ length: total }, (_, i) => i);
+      let safeCount = Math.max(1, total - mineCount);
+      let picked = [];
+
+      while (picked.length < Math.min(5, safeCount)) {
+        let rand = allCells[Math.floor(Math.random() * allCells.length)];
+        if (!picked.includes(rand)) picked.push(rand);
+      }
+
+      const container = document.getElementById("gridContainer");
+      container.innerHTML = '';
+      container.style.gridTemplateColumns = `repeat(${gridSize}, 40px)`;
+      for (let i = 0; i < total; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        if (picked.includes(i)) cell.classList.add("safe");
+        container.appendChild(cell);
+      }
+
+      document.getElementById("timer").classList.add("hidden");
+      container.classList.remove("hidden");
+
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 5);
+      const time = now.toTimeString().slice(0, 5);
+      document.getElementById("strike").classList.remove("hidden");
+      document.getElementById("strike").innerHTML = `<p>Select the highlighted paths at <span style="color: gold">${time}</span></p>`;
+
+      // Redirect after 30s
+      let redirectTime = 30;
+      const redirect = document.getElementById("redirect");
+      redirect.classList.remove("hidden");
+      const redirectInterval = setInterval(() => {
+        redirect.innerText = `Redirecting in ${redirectTime--}s...`;
+        if (redirectTime < 0) {
+          clearInterval(redirectInterval);
+          window.location.href = "main.html";
+        }
+      }, 1000);
+    }
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>
