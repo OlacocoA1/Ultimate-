@@ -59,6 +59,12 @@
       font-size: 18px;
       color: cyan;
     }
+
+    #lockMessage {
+      color: red;
+      font-size: 20px;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +88,7 @@
   </div>
   <div id="output" class="hidden"></div>
   <div id="redirect" class="hidden"></div>
+  <div id="lockMessage" class="hidden"></div>
 
   <script>
     let predictionCount = 0;
@@ -92,8 +99,7 @@
 
     function startPrediction() {
       if (predictionCount >= 5) {
-        alert("You have used all 5 predictions. Redirecting...");
-        window.location.href = "main.html";
+        lockOutUser();
         return;
       }
 
@@ -158,13 +164,23 @@
           if (predictionCount < 5) {
             document.getElementById("startBtn").disabled = false;
           } else {
-            window.location.href = "main.html";
+            lockOutUser();
           }
         }
       }, 1000);
     }
 
-    // Show default remaining count on load
+    function lockOutUser() {
+      document.getElementById("startBtn").classList.add("hidden");
+      document.getElementById("lockMessage").classList.remove("hidden");
+      document.getElementById("lockMessage").innerHTML = `❌ You've used all 5 predictions.<br>🔁 Redirecting to home...`;
+
+      setTimeout(() => {
+        window.location.href = "main.html";
+      }, 5000);
+    }
+
+    // Initialize tracker
     updateRemaining();
   </script>
 
