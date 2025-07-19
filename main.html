@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Main Page</title>
   <style>
@@ -84,6 +84,10 @@
       <img src="aviator.jpeg" alt="Aviator">
       <p>Aviator Coefficient Injector</p>
     </div>
+    <div class="game-item" onclick="selectGame('take-the-shot')">
+      <img src="take-the-shot.jpeg" alt="Take the Shot">
+      <p>Take the Shot Predictor</p>
+    </div>
   </div>
 
   <script>
@@ -100,6 +104,11 @@
           break;
         case 'aviator':
           window.location.href = 'aviator-bookmaker.html';
+          break;
+        case 'take-the-shot':
+          window.location.href = 'take-shot-bookmaker.html';
+          break;
+        default:
           break;
       }
     }
