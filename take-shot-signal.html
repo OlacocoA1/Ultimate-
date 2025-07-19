@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Take the Shot Signal</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    select, button {
+      font-size: 16px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #output, #timer, #redirect {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Take the Shot Predictor</h1>
+  <p>Select the penalty taker's star rating shown on your screen</p>
+
+  <select id="starRating">
+    <option value="1">★ (1 Star)</option>
+    <option value="2">★★ (2 Stars)</option>
+    <option value="3">★★★ (3 Stars)</option>
+  </select>
+
+  <button onclick="startPrediction()" id="startBtn">Start Prediction</button>
+
+  <div id="timer" class="hidden">Preparing prediction... 10</div>
+  <div id="output" class="hidden"></div>
+  <div id="redirect" class="hidden"></div>
+
+  <script>
+    let predictionCount = 0;
+
+    function startPrediction() {
+      if (predictionCount >= 5) return;
+
+      document.getElementById("output").classList.add("hidden");
+      document.getElementById("redirect").classList.add("hidden");
+      document.getElementById("startBtn").disabled = true;
+      document.getElementById("timer").classList.remove("hidden");
+
+      let timeLeft = 10;
+      document.getElementById("timer").innerText = "Preparing prediction... " + timeLeft;
+      const countdown = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = "Preparing prediction... " + timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          showPrediction();
+        }
+      }, 1000);
+    }
+
+    function showPrediction() {
+      predictionCount++;
+      document.getElementById("timer").classList.add("hidden");
+
+      const star = parseInt(document.getElementById("starRating").value);
+      const targets = ["Top Left", "Top Right", "Bottom Left", "Bottom Right", "Center", "Far Left", "Far Right"];
+      const strategies = ["COLLECT HALF", "RISK IT ALL", "COLLECT"];
+      const odds = [2.0, 2.5, 3.0, 3.5];
+
+      const target = targets[Math.floor(Math.random() * targets.length)];
+      const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+      const odd = odds[Math.floor(Math.random() * odds.length)];
+      const player = ["A. Musa", "K. John", "D. Bello", "S. Abah", "L. Okoye", "F. James"][Math.floor(Math.random() * 6)];
+
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 5);
+      const strikeTime = now.toTimeString().slice(0, 5);
+
+      document.getElementById("output").classList.remove("hidden");
+      document.getElementById("output").innerHTML = `
+        <h2>Prediction ${predictionCount}/5</h2>
+        <p>👤 Penalty Taker: ${player} (${star}★)</p>
+        <p>🎯 Target: ${target}</p>
+        <p>📈 Odds: ${odd}x</p>
+        <p>💡 Strategy: ${strategy}</p>
+        <p>🕒 Strike at: <span style="color: gold">${strikeTime}</span></p>
+        <p style="color:red;">⚠️ Use at your own risk</p>
+      `;
+
+      let countdown = 30;
+      document.getElementById("redirect").classList.remove("hidden");
+      document.getElementById("redirect").innerText = `Next prediction in ${countdown}s...`;
+
+      const timer = setInterval(() => {
+        countdown--;
+        document.getElementById("redirect").innerText = predictionCount < 5
+          ? `Next prediction in ${countdown}s...`
+          : `Redirecting in ${countdown}s...`;
+
+        if (countdown <= 0) {
+          clearInterval(timer);
+          if (predictionCount < 5) {
+            document.getElementById("startBtn").disabled = false;
+          } else {
+            window.location.href = "main.html";
+          }
+        }
+      }, 1000);
+    }
+  </script>
+
+  <!-- Adsterra -->
+  <script type='text/javascript' src='//pl16213274.profitableratecpm.com/97/df/7b/97df7bff03132071f1f31973f5ddc233.js'></script>
+</body>
+</html>
