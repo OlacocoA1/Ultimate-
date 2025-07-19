@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Take the Shot Signal</title>
+  <title>Take the Shot Predictor</title>
   <style>
     body {
       background-color: black;
@@ -31,9 +31,27 @@
       display: none;
     }
 
-    #output, #timer, #redirect {
+    #output, #timer, #redirect, #animation {
       margin-top: 20px;
       font-size: 18px;
+    }
+
+    @keyframes flicker {
+      0% {opacity: 1;}
+      50% {opacity: 0.4;}
+      100% {opacity: 1;}
+    }
+
+    .flicker {
+      animation: flicker 1s infinite;
+      color: gold;
+      font-size: 22px;
+    }
+
+    .reveal {
+      font-size: 24px;
+      color: lime;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -50,6 +68,10 @@
   <button onclick="startPrediction()" id="startBtn">Start Prediction</button>
 
   <div id="timer" class="hidden">Preparing prediction... 10</div>
+  <div id="animation" class="hidden">
+    <div class="flicker">🎯 Preparing Shot...</div>
+    <div class="flicker">⏳ Predicting...</div>
+  </div>
   <div id="output" class="hidden"></div>
   <div id="redirect" class="hidden"></div>
 
@@ -71,43 +93,42 @@
         document.getElementById("timer").innerText = "Preparing prediction... " + timeLeft;
         if (timeLeft <= 0) {
           clearInterval(countdown);
-          showPrediction();
+          showAnimation();
         }
       }, 1000);
     }
 
+    function showAnimation() {
+      document.getElementById("timer").classList.add("hidden");
+      document.getElementById("animation").classList.remove("hidden");
+
+      setTimeout(() => {
+        document.getElementById("animation").classList.add("hidden");
+        showPrediction();
+      }, 3000);
+    }
+
     function showPrediction() {
       predictionCount++;
-      document.getElementById("timer").classList.add("hidden");
+      document.getElementById("output").classList.remove("hidden");
 
-      const star = parseInt(document.getElementById("starRating").value);
       const targets = ["Top Left", "Top Right", "Bottom Left", "Bottom Right", "Center", "Far Left", "Far Right"];
       const strategies = ["COLLECT HALF", "RISK IT ALL", "COLLECT"];
-      const odds = [2.0, 2.5, 3.0, 3.5];
 
       const target = targets[Math.floor(Math.random() * targets.length)];
       const strategy = strategies[Math.floor(Math.random() * strategies.length)];
-      const odd = odds[Math.floor(Math.random() * odds.length)];
-      const player = ["A. Musa", "K. John", "D. Bello", "S. Abah", "L. Okoye", "F. James"][Math.floor(Math.random() * 6)];
 
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 5);
-      const strikeTime = now.toTimeString().slice(0, 5);
-
-      document.getElementById("output").classList.remove("hidden");
       document.getElementById("output").innerHTML = `
-        <h2>Prediction ${predictionCount}/5</h2>
-        <p>👤 Penalty Taker: ${player} (${star}★)</p>
-        <p>🎯 Target: ${target}</p>
-        <p>📈 Odds: ${odd}x</p>
-        <p>💡 Strategy: ${strategy}</p>
-        <p>🕒 Strike at: <span style="color: gold">${strikeTime}</span></p>
+        <div class="reveal">🔥 TARGET: ${target}</div>
+        <p style="color: cyan;">💡 Strategy: ${strategy}</p>
         <p style="color:red;">⚠️ Use at your own risk</p>
       `;
 
       let countdown = 30;
       document.getElementById("redirect").classList.remove("hidden");
-      document.getElementById("redirect").innerText = `Next prediction in ${countdown}s...`;
+      document.getElementById("redirect").innerText = predictionCount < 5
+        ? `Next prediction in ${countdown}s...`
+        : `Redirecting in ${countdown}s...`;
 
       const timer = setInterval(() => {
         countdown--;
