@@ -53,6 +53,12 @@
       color: lime;
       margin-top: 20px;
     }
+
+    #remaining {
+      margin-top: 10px;
+      font-size: 18px;
+      color: cyan;
+    }
   </style>
 </head>
 <body>
@@ -64,6 +70,8 @@
     <option value="2">★★ (2 Stars)</option>
     <option value="3">★★★ (3 Stars)</option>
   </select>
+
+  <p id="remaining">Predictions Remaining: 0/5</p>
 
   <button onclick="startPrediction()" id="startBtn">Start Prediction</button>
 
@@ -78,8 +86,16 @@
   <script>
     let predictionCount = 0;
 
+    function updateRemaining() {
+      document.getElementById("remaining").innerText = `Predictions Remaining: ${predictionCount}/5`;
+    }
+
     function startPrediction() {
-      if (predictionCount >= 5) return;
+      if (predictionCount >= 5) {
+        alert("You have used all 5 predictions. Redirecting...");
+        window.location.href = "main.html";
+        return;
+      }
 
       document.getElementById("output").classList.add("hidden");
       document.getElementById("redirect").classList.add("hidden");
@@ -110,7 +126,7 @@
 
     function showPrediction() {
       predictionCount++;
-      document.getElementById("output").classList.remove("hidden");
+      updateRemaining();
 
       const targets = ["Top Left", "Top Right", "Bottom Left", "Bottom Right", "Center", "Far Left", "Far Right"];
       const strategies = ["COLLECT HALF", "RISK IT ALL", "COLLECT"];
@@ -118,6 +134,7 @@
       const target = targets[Math.floor(Math.random() * targets.length)];
       const strategy = strategies[Math.floor(Math.random() * strategies.length)];
 
+      document.getElementById("output").classList.remove("hidden");
       document.getElementById("output").innerHTML = `
         <div class="reveal">🔥 TARGET: ${target}</div>
         <p style="color: cyan;">💡 Strategy: ${strategy}</p>
@@ -146,6 +163,9 @@
         }
       }, 1000);
     }
+
+    // Show default remaining count on load
+    updateRemaining();
   </script>
 
   <!-- Adsterra -->
